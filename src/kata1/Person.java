@@ -1,18 +1,23 @@
 package kata1;
 
-import java.time.LocalDate;
-import java.time.Period;
+import java.util.Date;
 
 public class Person {
     private final String name;
-    private final LocalDate birthday;
+    private final Date birthday;
+    private static final int MS_PER_SECOND = 1000;
+    private static final int SECONDS_PER_MINUTE = 60;
+    private static final int MINUTES_PER_HOUR = 60;
+    private static final int HOUR_PER_DAY = 24;
+    private static final double DAYS_PER_YEAR = 365.25;
+    private static final double MS_PER_YEAR = MS_PER_SECOND * SECONDS_PER_MINUTE * MINUTES_PER_HOUR * HOUR_PER_DAY * DAYS_PER_YEAR;
 
-    public Person(String name, LocalDate birthday) {
+    public Person(String name, Date birthday) {
         this.name = name;
         this.birthday = birthday;
     }
 
-        public String getName() {
+    public String getName() {
         return name;
     }
 
@@ -21,11 +26,16 @@ public class Person {
         return "Person{" + "name=" + name + ", birthday=" + birthday + ", age=" + getAge() + '}';
     }
 
-    public LocalDate getBirthday() {
+    public Date getBirthday() {
         return birthday;
     }
     
     public int getAge(){
-        return Period.between(birthday,LocalDate.now()).getYears(); 
+        long ms = new Date().getTime() - birthday.getTime();
+        return toYears(ms);
+    }
+
+    private int toYears(long ms) {
+        return (int) (ms / MS_PER_YEAR);
     }
 }
